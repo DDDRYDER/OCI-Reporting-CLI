@@ -1,0 +1,10 @@
+[DEFAULT]
+user=ocid1.user.oc1..aaaaaaaa7y7hp-------------------l6qwfbq
+fingerprint=b4:06:-------------------a8:43:3c
+tenancy=ocid1.tenancy.oc1..aaaaaaaa7qrt-------------------ujtgwhq
+region=us-phoenix-1
+compartment_id=ocid1.compartment.oc1..aaaaaaaal42cl7-------------------6sdnuywuq
+ssh_key_pub=/root/.ssh/ocisshkey.pub
+key_file=/root/.ssh/ociapikey.pem
+availability_domain=Rmpq:PHX-AD-1
+OCI_SSH_KEY_PUB=abc.aaaaaaaa7qrtm-------------------jtgwhq
