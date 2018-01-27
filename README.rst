@@ -40,6 +40,7 @@ Examples
 ========
 
 ::
+  
   python cli.py oci_config1.txt compute
   python cli.py oci_config1.txt storage
   python cli.py oci_config1.txt database
