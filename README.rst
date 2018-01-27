@@ -39,11 +39,12 @@ Development
 Examples
 ========
 
-python cli.py oci_config1.txt compute
-python cli.py oci_config1.txt storage
-python cli.py oci_config1.txt database
-python cli.py oci_config1.txt shapes
-python cli.py oci_config1.txt images
+::
+  python cli.py oci_config1.txt compute
+  python cli.py oci_config1.txt storage
+  python cli.py oci_config1.txt database
+  python cli.py oci_config1.txt shapes
+  python cli.py oci_config1.txt images
 
 =============
 Documentation
