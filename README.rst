@@ -12,7 +12,7 @@ Provides a CLI to report resources deployed to an OCI Compartment.
 Installation
 ============
 
-Python 2.7+ and 3.5+ are supported.
+Python 3.6.3+ are supported.
 
 Requires the Python packages
 ::
@@ -40,7 +40,7 @@ Examples
 ========
 
 ::
-  
+
   python cli.py oci_config1.txt compute
   python cli.py oci_config1.txt storage
   python cli.py oci_config1.txt database
