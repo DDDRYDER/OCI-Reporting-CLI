@@ -28,16 +28,20 @@ else:
     cmd = "help"
 
 
-# Clients: Compute, BLockstorage, Database
+# Clients: Compute, Blockstorage, Database, Identity, Load Balancer
 cp = oci.core.compute_client.ComputeClient( config )
 bs = oci.core.blockstorage_client.BlockstorageClient( config )
 vn = oci.core.virtual_network_client.VirtualNetworkClient( config )
 db = oci.database.database_client.DatabaseClient( config )
+id = oci.identity.IdentityClient( config )
+lb = oci.load_balancer.LoadBalancerClient( config )
+
 o = Operations( cp, bs, vn )
 
 if cmd == "auth":
     print( config )
     print( OCI_SSH_KEY_PUB )
+    print( dir( cp  ) )
 
 elif cmd == "compute":
     # list volumes for each instance
@@ -96,6 +100,26 @@ elif cmd == "images":
     r1 = cp.list_images( config["compartment_id"] ).data
     for i in r1:
         out = ", ".join( map( str, [ i.display_name,  i.id, "..."+i.id[-6:] ] ) )
+        print( out )
+
+elif cmd == "compartments":
+    r1 = id.list_compartments( config["tenancy"] ).data
+    for i in r1:
+        out = ", ".join( map( str, [ i.description,  i.id, "..."+i.id[-6:] ] ) )
+        print( out )
+
+elif cmd == "loadbalancers":
+    lbShapes = lb.list_shapes( config["compartment_id"] ).data
+    r1 = lb.list_load_balancers( config["compartment_id"] ).data
+    for i in r1:
+        rateMbps = re.findall( r'([0-9]+)Mbps', i.shape_name )[0]
+        out = ", ".join( map( str, [ i.display_name,  rateMbps, i.shape_name, "..."+i.id[-6:] ] ) )
+        print( out )
+
+elif cmd == "users":
+    r1 = id.list_users( config["tenancy"] ).data
+    for i in r1:
+        out = ", ".join( map( str, [ i.description,  i.id, "..."+i.id[-6:] ] ) )
         print( out )
 
 elif cmd == "shapes":
