@@ -380,4 +380,4 @@ elif cmd == 'iscsiShowDetach':
 
 else:
     print( "Usage: python oci-cli.py <config-file> <cmd>" )
-    print( "Commands: auth, compute, database, storage, shapes, images" )
+    print( "Commands: auth, compute, database, storage, shapes, images, loadbalancers" )
