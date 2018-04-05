@@ -33,6 +33,7 @@ cp = oci.core.compute_client.ComputeClient( config )
 bs = oci.core.blockstorage_client.BlockstorageClient( config )
 vn = oci.core.virtual_network_client.VirtualNetworkClient( config )
 db = oci.database.database_client.DatabaseClient( config )
+fs = oci.file_storage.FileStorageClient( config )
 id = oci.identity.IdentityClient( config )
 lb = oci.load_balancer.LoadBalancerClient( config )
 
@@ -101,6 +102,23 @@ elif cmd == "images":
     for i in r1:
         out = ", ".join( map( str, [ i.display_name,  i.id, "..."+i.id[-6:] ] ) )
         print( out )
+
+elif cmd == "availabilityDomains":
+    r1 = id.list_availability_domains( config["compartment_id"] ).data
+    r1 = id.list_availability_domains( config["tenancy"] ).data
+    for i in r1:
+        out = ", ".join( map( str, [ i.name, "..."+i.compartment_id[-6:] ] ) )
+        print( out )
+
+elif cmd == "filesystems":
+    a1 = id.list_availability_domains( config["tenancy"] ).data
+    #availabilityDomains = [ i.name for i in r1 ]
+    #print( availabilityDomains )
+    for ad in a1:
+        r1 = fs.list_file_systems( config["compartment_id"], availability_domain=ad.name).data
+        for i in r1:
+            out = ", ".join( map( str, [ ad.name, i.display_name, "..."+i.id[-6:], i.metered_bytes ] ) )
+            print( out )
 
 elif cmd == "compartments":
     r1 = id.list_compartments( config["tenancy"] ).data
@@ -380,4 +398,4 @@ elif cmd == 'iscsiShowDetach':
 
 else:
     print( "Usage: python oci-cli.py <config-file> <cmd>" )
-    print( "Commands: auth, compute, database, storage, shapes, images, loadbalancers" )
+    print( "Commands: auth, compute, database, storage, shapes, images, loadbalancers, filesystems, " )
