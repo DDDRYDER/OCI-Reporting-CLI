@@ -12,6 +12,7 @@ import re
 import oci # OCI SDK
 from utilities import jsonListFind, jsonListFind2, jsonListFindAll
 from operations import Operations
+import base64, codecs
 
 # Arguments
 #
@@ -36,6 +37,7 @@ db = oci.database.database_client.DatabaseClient( config )
 fs = oci.file_storage.FileStorageClient( config )
 id = oci.identity.IdentityClient( config )
 lb = oci.load_balancer.LoadBalancerClient( config )
+os = oci.object_storage.ObjectStorageClient( config )
 
 o = Operations( cp, bs, vn )
 
@@ -43,6 +45,22 @@ if cmd == "auth":
     print( config )
     print( OCI_SSH_KEY_PUB )
     print( dir( cp  ) )
+
+elif cmd == "objectStorageBuckets":
+    nameSpace = sys.argv[3]
+    buckets = os.list_buckets( namespace_name=nameSpace, compartment_id=config["compartment_id"] ).data
+    for i in buckets:
+        out = ", ".join( map( str, [ i.name, "..."+i.etag[-6:] ] ) )
+        print( out )
+
+elif cmd == "objectStorageObjects":
+    nameSpace = sys.argv[3]
+    bucketName = sys.argv[4]
+    objects = os.list_objects( namespace_name=nameSpace, bucket_name=bucketName, fields='name,size, timeCreated,md5' ).data
+    for i in objects.objects:
+        md5Hex = str( codecs.encode( base64.standard_b64decode( i.md5 ), "hex" ) )
+        out = ", ".join( map( str, [ i.name, i.size, i.time_created, i.md5[-8:], md5Hex[-8:] ] ) )
+        print( out )
 
 elif cmd == "compute":
     # list volumes for each instance
@@ -398,4 +416,4 @@ elif cmd == 'iscsiShowDetach':
 
 else:
     print( "Usage: python oci-cli.py <config-file> <cmd>" )
-    print( "Commands: auth, compute, database, storage, shapes, images, loadbalancers, filesystems, " )
+    print( "Commands: auth, compute, database, storage, shapes, images, loadbalancers, filesystems, objectStorageBuckets, objectStorageObjects" )
